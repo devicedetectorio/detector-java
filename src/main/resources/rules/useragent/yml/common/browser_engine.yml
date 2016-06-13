@@ -1,0 +1,97 @@
+-
+  conditions:
+     -
+        type: trie
+        value: khtml/
+  category: browser_engine
+  priority: 8
+  features:
+    browser_engine: KHTML
+    browser_engine_version:
+      type: substringBetween
+      open: "khtml/"
+      close: " "
+
+-
+  conditions:
+     -
+        type: trie
+        value: edge/
+  category: browser_engine
+  priority: 7
+  features:
+    browser_engine: Edge
+    browser_engine_version:
+      type: substringBetween
+      open: "edge/"
+      close: " "
+
+-
+  conditions:
+     -
+        type: trie
+        value: applewebkit/
+  category: browser_engine
+  priority: 6
+  features:
+    browser_engine: WebKit
+    browser_engine_version:
+      type: substringBetween
+      open: "applewebkit/"
+      close: " "
+
+-
+  conditions:
+     -
+        type: trie
+        value: gecko/
+  category: browser_engine
+  priority: 5
+  features:
+    browser_engine: Gecko
+    browser_engine_version:
+      type: substringBetween
+      open: "gecko/"
+      close: " "
+
+-
+  conditions:
+     -
+        type: trie
+        value: trident/
+  category: browser_engine
+  priority: 4
+  features:
+    browser_engine: Trident
+    browser_engine_version:
+      type: substringBetween
+      open: "trident/"
+      close: " "
+
+-
+  conditions:
+     -
+        type: trie
+        value: blink/
+  category: browser_engine
+  priority: 3
+  features:
+    browser_engine: Blink
+    browser_engine_version:
+      type: substringBetween
+      open: "blink/"
+      close: " "
+
+-
+  conditions:
+     -
+        type: trie
+        value: presto/
+  category: browser_engine
+  priority: 2
+  features:
+    browser_engine: Presto
+    browser_engine_version:
+      type: substringBetween
+      open: "trie/"
+      close: " "

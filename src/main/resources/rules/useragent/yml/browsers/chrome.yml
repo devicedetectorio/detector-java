@@ -1,0 +1,31 @@
+-
+  conditions:
+     -
+        type: trie
+        value: chrome/
+  category: browser
+  priority: 1
+  features:
+    browser_name: Chrome
+    browser_producer: Google Inc.
+    browser_family: Chrome
+    browser_version:
+      type: substringBetween
+      open: "chrome/"
+      close: " "
+
+-
+  conditions:
+     -
+        type: trie
+        value: crmo/
+  category: browser
+  priority: 1
+  features:
+    browser_name: Chrome Mobile
+    browser_producer: Google Inc.
+    browser_family: Chrome
+    browser_version:
+      type: substringBetween
+      open: "crmo/"
+      close: " "
