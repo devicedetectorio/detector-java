@@ -27,7 +27,7 @@ jmh {
     warmupIterations = 1
     batchSize = 4
     fork = 1
-    include = ['io\\.devicedetector\\.benchmarks\\.cases\\.*']
+    include = ['io\\.devicedetector\\.benchmarks\\.detector\\.*']
     exclude = ['org\\.openjdk\\.jmh\\.benchmarks.*']
 }
 
@@ -52,5 +52,5 @@ dependencies {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '4.3'
+    gradleVersion = '4.6'
 }

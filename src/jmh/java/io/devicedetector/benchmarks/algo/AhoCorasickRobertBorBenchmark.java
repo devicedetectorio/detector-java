@@ -1,30 +1,24 @@
-package io.devicedetector.benchmarks.cases;
+package io.devicedetector.benchmarks.algo;
 
 import io.devicedetector.benchmarks.Fixtures;
+import org.ahocorasick.trie.Trie;
 import org.openjdk.jmh.annotations.*;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
-public class JavaRegexGroupMatchBenchmark {
+public class AhoCorasickRobertBorBenchmark {
 
     @State(Scope.Benchmark)
     public static class BenchmarkState {
         @Setup(Level.Trial)
         public void doSetup() throws IOException, URISyntaxException {
             fixtures = new Fixtures();
-
-            patterns = new ArrayList<>();
-            patterns.add(Pattern.compile("chrome/(?<version>[^\\s]+)"));
-            patterns.add(Pattern.compile("safari/(?<version>[^\\s]+)"));
-            patterns.add(Pattern.compile("firefox/(?<version>[^\\s]+)"));
-
+            trie = Trie.builder()
+                    .addKeywords(fixtures.patterns)
+                    .build();
             System.out.println(String.format(
                     "Prepared %s useragents and %s patterns for benchmark purpose.",
                     fixtures.useragents.size(),
@@ -33,20 +27,15 @@ public class JavaRegexGroupMatchBenchmark {
         }
 
         public Fixtures fixtures;
-        public List<Pattern> patterns;
+        public Trie trie;
     }
 
     @Benchmark
-    @Group("groupMatching")
+    @Group("stringOccurrence")
     @BenchmarkMode(Mode.SingleShotTime)
     public void measure(BenchmarkState state) {
         state.fixtures.useragents.stream().forEach(userAgent -> {
-            state.patterns.stream().forEach(pattern -> {
-                Matcher matcher = pattern.matcher(userAgent);
-                while (matcher.find()) {
-                    matcher.group("version");
-                }
-            });
+            state.trie.parseText(userAgent);
         });
     }
 }

@@ -1,26 +1,30 @@
-package io.devicedetector.benchmarks.cases;
+package io.devicedetector.benchmarks.algo;
 
 import io.devicedetector.benchmarks.Fixtures;
-import net.amygdalum.stringsearchalgorithms.search.MatchOption;
-import net.amygdalum.stringsearchalgorithms.search.StringFinder;
-import net.amygdalum.stringsearchalgorithms.search.bytes.WuManber;
-import net.amygdalum.util.io.StringByteProvider;
 import org.openjdk.jmh.annotations.*;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
-public class WuManberBytesBenchmark {
+public class JavaRegexGroupMatchBenchmark {
 
     @State(Scope.Benchmark)
     public static class BenchmarkState {
         @Setup(Level.Trial)
         public void doSetup() throws IOException, URISyntaxException {
             fixtures = new Fixtures();
-            stringSearch = new WuManber(fixtures.patterns, Charset.defaultCharset());
+
+            patterns = new ArrayList<>();
+            patterns.add(Pattern.compile("chrome/(?<version>[^\\s]+)"));
+            patterns.add(Pattern.compile("safari/(?<version>[^\\s]+)"));
+            patterns.add(Pattern.compile("firefox/(?<version>[^\\s]+)"));
+
             System.out.println(String.format(
                     "Prepared %s useragents and %s patterns for benchmark purpose.",
                     fixtures.useragents.size(),
@@ -29,18 +33,20 @@ public class WuManberBytesBenchmark {
         }
 
         public Fixtures fixtures;
-        public WuManber stringSearch;
+        public List<Pattern> patterns;
     }
 
     @Benchmark
-    @Group("stringOccurrence")
+    @Group("groupMatching")
     @BenchmarkMode(Mode.SingleShotTime)
     public void measure(BenchmarkState state) {
         state.fixtures.useragents.stream().forEach(userAgent -> {
-            final StringFinder finder = state.stringSearch.createFinder(
-                    new StringByteProvider(userAgent, 0), MatchOption.LONGEST_MATCH
-            );
-            finder.findAll();
+            state.patterns.stream().forEach(pattern -> {
+                Matcher matcher = pattern.matcher(userAgent);
+                while (matcher.find()) {
+                    matcher.group("version");
+                }
+            });
         });
     }
 }

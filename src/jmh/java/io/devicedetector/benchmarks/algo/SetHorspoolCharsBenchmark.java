@@ -1,26 +1,25 @@
-package io.devicedetector.benchmarks.cases;
+package io.devicedetector.benchmarks.algo;
 
 import io.devicedetector.benchmarks.Fixtures;
 import net.amygdalum.stringsearchalgorithms.search.MatchOption;
 import net.amygdalum.stringsearchalgorithms.search.StringFinder;
-import net.amygdalum.stringsearchalgorithms.search.bytes.AhoCorasick;
-import net.amygdalum.util.io.StringByteProvider;
+import net.amygdalum.stringsearchalgorithms.search.chars.SetHorspool;
+import net.amygdalum.util.io.StringCharProvider;
 import org.openjdk.jmh.annotations.*;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.nio.charset.Charset;
 import java.util.concurrent.TimeUnit;
 
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
-public class AhoCorasickBytesBenchmark {
+public class SetHorspoolCharsBenchmark {
 
     @State(Scope.Benchmark)
     public static class BenchmarkState {
         @Setup(Level.Trial)
         public void doSetup() throws IOException, URISyntaxException {
             fixtures = new Fixtures();
-            stringSearch = new AhoCorasick(fixtures.patterns, Charset.defaultCharset());
+            stringSearch = new SetHorspool(fixtures.patterns);
             System.out.println(String.format(
                     "Prepared %s useragents and %s patterns for benchmark purpose.",
                     fixtures.useragents.size(),
@@ -29,7 +28,7 @@ public class AhoCorasickBytesBenchmark {
         }
 
         public Fixtures fixtures;
-        public AhoCorasick stringSearch;
+        public SetHorspool stringSearch;
     }
 
     @Benchmark
@@ -38,7 +37,7 @@ public class AhoCorasickBytesBenchmark {
     public void measure(BenchmarkState state) {
         state.fixtures.useragents.stream().forEach(userAgent -> {
             final StringFinder finder = state.stringSearch.createFinder(
-                    new StringByteProvider(userAgent, 0), MatchOption.LONGEST_MATCH
+                    new StringCharProvider(userAgent, 0), MatchOption.LONGEST_MATCH
             );
             finder.findAll();
         });

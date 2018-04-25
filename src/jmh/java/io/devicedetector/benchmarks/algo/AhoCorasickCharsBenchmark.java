@@ -1,9 +1,9 @@
-package io.devicedetector.benchmarks.cases;
+package io.devicedetector.benchmarks.algo;
 
 import io.devicedetector.benchmarks.Fixtures;
 import net.amygdalum.stringsearchalgorithms.search.MatchOption;
 import net.amygdalum.stringsearchalgorithms.search.StringFinder;
-import net.amygdalum.stringsearchalgorithms.search.chars.WuManber;
+import net.amygdalum.stringsearchalgorithms.search.chars.AhoCorasick;
 import net.amygdalum.util.io.StringCharProvider;
 import org.openjdk.jmh.annotations.*;
 
@@ -12,14 +12,14 @@ import java.net.URISyntaxException;
 import java.util.concurrent.TimeUnit;
 
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
-public class WuManberCharsBenchmark {
+public class AhoCorasickCharsBenchmark {
 
     @State(Scope.Benchmark)
     public static class BenchmarkState {
         @Setup(Level.Trial)
         public void doSetup() throws IOException, URISyntaxException {
             fixtures = new Fixtures();
-            stringSearch = new WuManber(fixtures.patterns);
+            stringSearch = new AhoCorasick(fixtures.patterns);
             System.out.println(String.format(
                     "Prepared %s useragents and %s patterns for benchmark purpose.",
                     fixtures.useragents.size(),
@@ -28,7 +28,7 @@ public class WuManberCharsBenchmark {
         }
 
         public Fixtures fixtures;
-        public WuManber stringSearch;
+        public AhoCorasick stringSearch;
     }
 
     @Benchmark

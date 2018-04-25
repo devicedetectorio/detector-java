@@ -21,11 +21,11 @@ public class RegexCondition implements Condition<Pattern> {
 
         RegexCondition that = (RegexCondition) o;
 
-        return pattern.equals(that.pattern);
+        return pattern.pattern().equals(that.pattern.pattern());
     }
 
     @Override
     public int hashCode() {
-        return pattern.hashCode();
+        return pattern.pattern().hashCode();
     }
 }

@@ -1,4 +1,4 @@
-package io.devicedetector.benchmarks.cases;
+package io.devicedetector.benchmarks.algo;
 
 import com.google.re2j.Matcher;
 import com.google.re2j.Pattern;
